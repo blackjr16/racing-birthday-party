@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race to the Birthday Party!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .checkered-header {
+            background: repeating-linear-gradient(45deg,
+                    #000 0px,
+                    #000 20px,
+                    white 20px,
+                    white 40px);
+            height: 80px;
+            width: 100%;
+            position: relative;
+        }
+
+        .header-flag {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 50px;
+            animation: wave 2s infinite;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(10deg);
+            }
+
+            50% {
+                transform: rotate(0deg);
+            }
+
+            75% {
+                transform: rotate(-10deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            background-color: #e63946;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before,
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .hero::before {
+            top: -30px;
+            left: -30px;
+        }
+
+        .hero::after {
+            bottom: -30px;
+            right: -30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .birthday-boy {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .car-icon {
+            font-size: 40px;
+            margin: 15px 0;
+            display: inline-block;
+            transform: scaleX(-1);
+            animation: drive 3s infinite linear;
+        }
+
+        @keyframes drive {
+            0% {
+                transform: translateX(50px) scaleX(-1);
+            }
+
+            100% {
+                transform: translateX(-50px) scaleX(-1);
+            }
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .section h2 {
+            margin-bottom: 15px;
+            color: #e63946;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2::before {
+            content: '🏁';
+            margin-right: 10px;
+        }
+
+        .section-details {
+            background-color: #f1faee;
+            border-left: 5px solid #e63946;
+        }
+
+        .section-theme {
+            background-color: #a8dadc;
+            border-left: 5px solid #457b9d;
+        }
+
+        .section-activities {
+            background-color: #457b9d;
+            color: white;
+            border-left: 5px solid #1d3557;
+        }
+
+        .section-rsvp {
+            background-color: #1d3557;
+            color: white;
+            border-left: 5px solid #e63946;
+        }
+
+        .section-gifts {
+            background-color: #f1faee;
+            border-left: 5px solid #e63946;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .detail-item i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .activities-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .activity-item {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .activity-item i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .rsvp-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background-color: #c1121f;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #e63946;
+        }
+
+        .road {
+            height: 30px;
+            background-color: #333;
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .road::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: repeating-linear-gradient(to right,
+                    #fff 0px,
+                    #fff 20px,
+                    transparent 20px,
+                    transparent 40px);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .map-container {
+            height: 300px;
+            border-radius: 8px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .countdown-item {
+            text-align: center;
+            width: 60px;
+        }
+
+        .countdown-value {
+            background-color: #e63946;
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+
+        .countdown-label {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .cars-border {
+            height: 50px;
+            background-image: url('/api/placeholder/800/50');
+            background-size: contain;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .car-animate {
+            position: absolute;
+            font-size: 24px;
+            bottom: 0;
+            animation: car-move 15s infinite linear;
+        }
+
+        .gcash-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .gcash-qr {
+            flex-shrink: 0;
+            width: 150px;
+            height: 150px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 2px dashed #457b9d;
+        }
+
+        .gcash-details {
+            flex-grow: 1;
+        }
+
+        .gcash-details p {
+            margin-bottom: 10px;
+        }
+
+        .settings-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #e63946;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            display: none;
+            /* Hidden by default */
+        }
+
+        .settings-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 99;
+            display: none;
+        }
+
+        .settings-panel.active {
+            display: block;
+        }
+
+        .settings-title {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        #admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .rsvp-counter {
+            background-color: #e63946;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .rsvp-counter span {
+            font-size: 1.8rem;
+            margin: 0 5px;
+        }
+
+        .admin-login {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: transparent;
+            color: #777;
+            font-size: 12px;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+            z-index: 90;
+        }
+
+        .admin-login:hover {
+            text-decoration: underline;
+        }
+
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .login-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+        }
+
+        .login-content h3 {
+            margin-bottom: 15px;
+            text-align: center;
+            color: #e63946;
+        }
+
+        .no-settings-message {
+            background-color: #ffdddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #e63946;
+            display: none;
+        }
+
+        @keyframes car-move {
+            0% {
+                left: -50px;
+            }
+
+            100% {
+                left: calc(100% + 50px);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding: 30px 15px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .activities-list {
+                grid-template-columns: 1fr;
+            }
+
+            .countdown-container {
+                flex-wrap: wrap;
+            }
+
+            .gcash-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="checkered-header">
+        <div class="header-flag">🏁</div>
+    </div>
+
+    <div class="container">
+        <div id="no-settings-message" class="no-settings-message">
+            <p><strong>Warning:</strong> This party hasn't been configured yet. If you're the event organizer, please
+                login as admin to set up the party details.</p>
+        </div>
+
+        <div class="hero">
+            <h1>Race to the Birthday Party!</h1>
+            <p class="subtitle">Start your engines and join us for</p>
+            <p class="birthday-boy" id="birthday-child-display">[CHILD'S NAME]'s [AGE]nd Birthday</p>
+            <div class="car-icon">🏎️</div>
+        </div>
+
+        <div class="countdown-container">
+            <div class="countdown-item">
+                <div class="countdown-value" id="days">--</div>
+                <div class="countdown-label">DAYS</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="hours">--</div>
+                <div class="countdown-label">HOURS</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="minutes">--</div>
+                <div class="countdown-label">MINUTES</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="seconds">--</div>
+                <div class="countdown-label">SECONDS</div>
+            </div>
+        </div>
+
+        <section class="section section-details">
+            <h2>Race Day Details</h2>
+            <div class="detail-item">
+                <i>📅</i>
+                <span><strong>Date:</strong> <span id="party-date-display">[DAY], [MONTH] [DATE], [YEAR]</span></span>
+            </div>
+            <div class="detail-item">
+                <i>⏰</i>
+                <span><strong>Time:</strong> <span id="party-time-display">[START TIME] - [END TIME]</span></span>
+            </div>
+            <div class="detail-item">
+                <i>📍</i>
+                <span><strong>Location:</strong> <span id="party-location-display">[VENUE NAME], [ADDRESS]</span></span>
+            </div>
+
+            <div id="map" class="map-container">
+                <!-- Google Maps will be loaded here -->
+                <p style="text-align: center; padding-top: 130px;">Map will appear here after setting location</p>
+            </div>
+        </section>
+
+        <div class="road">
+            <div class="car-animate">🏎️</div>
+        </div>
+
+        <section class="section section-theme">
+            <h2>Racing Theme</h2>
+            <p>Get ready for a high-speed birthday celebration! We're having a car racing themed party with checkered
+                flags, race tracks, and lots of fun automotive activities.</p>
+            <p><strong>Dress Code:</strong> Feel free to dress in racing attire or your favorite car colors!</p>
+        </section>
+
+        <section class="section section-activities">
+            <h2>Pit Stop Activities</h2>
+            <p>Here's what's planned for our little racers:</p>
+
+            <div class="activities-list">
+                <div class="activity-item">
+                    <i>🏎️</i>
+                    <span>Mini Race Cars</span>
+                </div>
+                <div class="activity-item">
+                    <i>🎮</i>
+                    <span>Racing Games</span>
+                </div>
+                <div class="activity-item">
+                    <i>🎨</i>
+                    <span>Design Your Car</span>
+                </div>
+                <div class="activity-item">
+                    <i>🍰</i>
+                    <span>Race Track Cake</span>
+                </div>
+                <div class="activity-item">
+                    <i>🎁</i>
+                    <span>Pit Stop Prizes</span>
+                </div>
+                <div class="activity-item">
+                    <i>📸</i>
+                    <span>Photo Finish</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="cars-border"></div>
+
+        <section class="section section-rsvp">
+            <h2>RSVP</h2>
+            <p>Please let us know if you'll be joining our race day celebration by <span id="rsvp-date-display">[RSVP
+                    DATE]</span>.</p>
+
+            <div class="rsvp-counter">
+                Current RSVPs: <span id="rsvp-counter">0</span> racers!
+            </div>
+
+            <form class="rsvp-form" id="rsvp-form">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="attendees">Number of Attendees</label>
+                    <input type="number" id="attendees" name="attendees" min="1" value="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message (Optional)</label>
+                    <textarea id="message" name="message" rows="3"
+                        placeholder="Any special notes or dietary requirements?"></textarea>
+                </div>
+                <button type="submit" class="btn">Start Your Engines!</button>
+            </form>
+        </section>
+
+        <section class="section section-gifts">
+            <h2>Pit Stop Gifts</h2>
+            <p>In lieu of physical gifts, you may send a GCash gift to help fuel our birthday racer's dreams!</p>
+
+            <div class="gcash-container">
+                <div class="gcash-qr" id="gcash-qr">
+                    <!-- QR code will be generated here -->
+                    📱
+                </div>
+                <div class="gcash-details">
+                    <p><strong>GCash Number:</strong> <span id="gcash-number-display">[GCASH NUMBER]</span></p>
+                    <p><strong>Account Name:</strong> <span id="gcash-name-display">[ACCOUNT NAME]</span></p>
+                    <p>Please add <strong>"Birthday Gift for <span id="birthday-name-short">[NAME]</span>"</strong> in
+                        the notes.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>For questions, please contact:</p>
+            <p><strong>Phone:</strong> <span id="contact-phone-display">[PHONE NUMBER]</span> | <strong>Email:</strong>
+                <span id="contact-email-display">[EMAIL ADDRESS]</span>
+            </p>
+            <p>🏁 We can't wait to celebrate with you! 🏎️</p>
+        </div>
+    </div>
+
+    <!-- Admin Login Button (subtle) -->
+    <button class="admin-login" id="admin-login">Admin</button>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="login-modal">
+        <div class="login-content">
+            <h3>Admin Login</h3>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter admin password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <button type="button" class="btn" id="cancel-login"
+                    style="background-color: #777; margin-top: 10px;">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Toggle (only visible after admin login) -->
+    <div class="settings-toggle" id="settings-toggle">⚙️</div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settings-panel">
+        <div class="settings-title">Party Settings</div>
+        <form id="admin-form">
+            <div class="form-group">
+                <label for="admin-password">Admin Password (to protect settings)</label>
+                <input type="password" id="admin-password" placeholder="Set admin password">
+            </div>
+            <div class="form-group">
+                <label for="birthday-child">Child's Name</label>
+                <input type="text" id="birthday-child" placeholder="Child's Name">
+            </div>
+            <div class="form-group">
+                <label for="birthday-age">Age</label>
+                <input type="number" id="birthday-age" min="1" value="5">
+            </div>
+            <div class="form-group">
+                <label for="party-date">Party Date & Time</label>
+                <input type="datetime-local" id="party-date">
+            </div>
+            <div class="form-group">
+                <label for="party-end-time">Party End Time</label>
+                <input type="time" id="party-end-time">
+            </div>
+            <div class="form-group">
+                <label for="party-location">Venue Name</label>
+                <input type="text" id="party-location" placeholder="Venue Name">
+            </div>
+            <div class="form-group">
+                <label for="party-address">Address</label>
+                <input type="text" id="party-address" placeholder="Address">
+            </div>
+            <div class="form-group">
+                <label for="maps-api-key">Google Maps API Key (optional)</label>
+                <input type="text" id="maps-api-key" placeholder="API Key">
+            </div>
+            <div class="form-group">
+                <label for="maps-coordinates">Map Coordinates (optional)</label>
+                <input type="text" id="maps-coordinates" placeholder="e.g. 14.5995,120.9842">
+            </div>
+            <div class="form-group">
+                <label for="rsvp-date">RSVP By Date</label>
+                <input type="date" id="rsvp-date">
+            </div>
+            <div class="form-group">
+                <label for="gcash-number">GCash Number</label>
+                <input type="text" id="gcash-number" placeholder="09XX XXX XXXX">
+            </div>
+            <div class="form-group">
+                <label for="gcash-name">GCash Account Name</label>
+                <input type="text" id="gcash-name" placeholder="Account Name">
+            </div>
+            <div class="form-group">
+                <label for="contact-phone">Contact Phone</label>
+                <input type="text" id="contact-phone" placeholder="Contact Phone">
+            </div>
+            <div class="form-group">
+                <label for="contact-email">Contact Email</label>
+                <input type="email" id="contact-email" placeholder="Contact Email">
+            </div>
+            <button type="button" class="btn" id="save-settings">Save Party Details</button>
+            <button type="button" class="btn" id="view-rsvps" style="background-color: #457b9d; margin-top: 10px;">View
+                RSVPs</button>
+            <button type="button" class="btn" id="logout"
+                style="background-color: #777; margin-top: 10px;">Logout</button>
+        </form>
+    </div>
+
+    <script>
+        // Initialize the application when page loads
+        window.addEventListener('DOMContentLoaded', function () {
+            // Check if party settings exist
+            const savedSettings = localStorage.getItem('racePartySettings');
+            if (savedSettings) {
+                loadSettings();
+                updateRSVPCounter();
+            } else {
+                // Show warning message if no settings found
+                document.getElementById('no-settings-message').style.display = 'block';
+            }
+
+            // Check if admin password has been set
+            const adminPassword = localStorage.getItem('racePartyAdminPassword');
+            if (!adminPassword) {
+                // If no password set yet, this must be first time setup
+                showFirstTimeSetup();
+            }
+        });
+
+        // First-time setup function
+        function showFirstTimeSetup() {
+            // Only show this for the organizer who first creates the page
+            const isFirstVisit = !localStorage.getItem('racePartyVisited');
+
+            if (isFirstVisit) {
+                // Mark as visited for future
+                localStorage.setItem('racePartyVisited', 'true');
+
+                // Show settings panel with password setup
+                document.getElementById('settings-toggle').style.display = 'flex';
+                document.getElementById('settings-panel').classList.add('active');
+
+                // Focus on password field
+                setTimeout(() => {
+                    document.getElementById('admin-password').focus();
+                    alert('Welcome! This appears to be your first time setting up this party. Please set an admin password to protect your party settings.');
+                }, 500);
+            }
+        }
+
+        // Admin Login Button functionality
+        document.getElementById('admin-login').addEventListener('click', function () {
+            document.getElementById('login-modal').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('password').focus();
+            }, 100);
+        });
+
+        // Cancel login
+        document.getElementById('cancel-login').addEventListener('click', function () {
+            document.getElementById('login-modal').style.display = 'none';
+        });
+
+        // Login form submission
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const enteredPassword = document.getElementById('password').value;
+            const storedPassword = localStorage.getItem('racePartyAdminPassword');
+
+            if (storedPassword && enteredPassword === storedPassword) {
+                // Show settings toggle button
+                document.getElementById('settings-toggle').style.display = 'flex';
+
+                // Hide login modal
+                document.getElementById('login-modal').style.display = 'none';
+
+                // Clear password field
+                document.getElementById('password').value = '';
+
+                // Show success message
+                alert('Login successful! You can now access party settings.');
+            } else {
+                alert('Incorrect password. Please try again.');
+            }
+        });
+
+        // Admin logout
+        document.getElementById('logout').addEventListener('click', function () {
+            // Hide settings button and panel
+            document.getElementById('settings-toggle').style.display = 'none';
+            document.getElementById('settings-panel').classList.remove('active');
+
+            alert('You have been logged out from admin access.');
+        });
+
+        // Settings toggle button functionality
+        document.getElementById('settings-toggle').addEventListener('click', function () {
+            document.getElementById('settings-panel').classList.toggle('active');
+        });
+
+        // RSVP form submission
+        document.getElementById('rsvp-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const attendees = parseInt(document.getElementById('attendees').value) || 1;
+            const message = document.getElementById('message').value;
+
+            // Save RSVP data
+            saveRSVP(name, email, attendees, message);
+
+            // Update counter display
+            updateRSVPCounter();
+
+            // Reset form
+            this.reset();
+
+            // Show success message
+            alert('Thank you for your RSVP! We look forward to seeing you at the party!');
+        });
+
+        // Save settings button functionality 
+        document.getElementById('save-settings').addEventListener('click', function () {
+            // Save admin password if provided
+            const adminPassword = document.getElementById('admin-password').value;
+            if (adminPassword) {
+                localStorage.setItem('racePartyAdminPassword', adminPassword);
+            }
+
+            // Get all input values
+            const childName = document.getElementById('birthday-child').value || "[CHILD'S NAME]";
+            const childAge = document.getElementById('birthday-age').value || "[AGE]";
+            const partyDate = document.getElementById('party-date').value ? new Date(document.getElementById('party-date').value) : null;
+            const partyEndTime = document.getElementById('party-end-time').value || "[END TIME]";
+            const venueLocation = document.getElementById('party-location').value || "[VENUE NAME]";
+            const venueAddress = document.getElementById('party-address').value || "[ADDRESS]";
+            const mapsApiKey = document.getElementById('maps-api-key').value;
+            const mapsCoordinates = document.getElementById('maps-coordinates').value;
+            const rsvpDate = document.getElementById('rsvp-date').value ? new Date(document.getElementById('rsvp-date').value) : null;
+            const gcashNumber = document.getElementById('gcash-number').value || "[GCASH NUMBER]";
+            const gcashName = document.getElementById('gcash-name').value || "[ACCOUNT NAME]";
+            const contactPhone = document.getElementById('contact-phone').value || "[PHONE NUMBER]";
+            const contactEmail = document.getElementById('contact-email').value || "[EMAIL ADDRESS]";
+
+            // Format date and time for display
+            let formattedPartyDate = "[DAY], [MONTH] [DATE], [YEAR]";
+            let formattedPartyTime = "[START TIME] - [END TIME]";
+            let formattedRSVPDate = "[RSVP DATE]";
+
+            if (partyDate) {
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                formattedPartyDate = partyDate.toLocaleDateString('en-US', options);
+
+                const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+                const startTime = partyDate.toLocaleTimeString('en-US', timeOptions);
+
+                let endTime = partyEndTime;
+                if (partyEndTime.includes(':')) {
+                    const [hours, minutes] = partyEndTime.split(':');
+                    const endTimeDate = new Date(partyDate);
+                    endTimeDate.setHours(parseInt(hours), parseInt(minutes));
+                    endTime = endTimeDate.toLocaleTimeString('en-US', timeOptions);
+                }
+
+                formattedPartyTime = `${startTime} - ${endTime}`;
+            }
+
+            if (rsvpDate) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                formattedRSVPDate = rsvpDate.toLocaleDateString('en-US', options);
+            }
+
+            // Save settings to localStorage
+            const settings = {
+                childName: childName,
+                childAge: childAge,
+                partyDate: partyDate ? partyDate.toISOString() : null,
+                partyEndTime: partyEndTime,
+                formattedPartyDate: formattedPartyDate,
+                formattedPartyTime: formattedPartyTime,
+                venueLocation: venueLocation,
+                venueAddress: venueAddress,
+                mapsApiKey: mapsApiKey,
+                mapsCoordinates: mapsCoordinates,
+                rsvpDate: rsvpDate ? rsvpDate.toISOString() : null,
+                formattedRSVPDate: formattedRSVPDate,
+                gcashNumber: gcashNumber,
+                gcashName: gcashName,
+                contactPhone: contactPhone,
+                contactEmail: contactEmail
+            };
+
+            localStorage.setItem('racePartySettings', JSON.stringify(settings));
+
+            // Update the display
+            updatePartyDisplayElements();
+
+            // Hide the warning message
+            document.getElementById('no-settings-message').style.display = 'none';
+
+            // Show success message
+            alert('Party details saved successfully!');
+        });
+
+        // View RSVPs button
+        document.getElementById('view-rsvps').addEventListener('click', function () {
+            // Retrieve all RSVPs
+            const rsvps = getAllRSVPs();
+
+            if (rsvps.length === 0) {
+                alert('No RSVPs have been received yet.');
+                return;
+            }
+
+            // Format RSVPs for display
+            let rsvpText = '===== RSVP LIST =====\n\n';
+            let totalAttendees = 0;
+
+            rsvps.forEach((rsvp, index) => {
+                rsvpText += `#${index + 1}: ${rsvp.name} (${rsvp.email})\n`;
+                rsvpText += `Attendees: ${rsvp.attendees}\n`;
+                if (rsvp.message) {
+                    rsvpText += `Message: ${rsvp.message}\n`;
+                }
+                rsvpText += `Date submitted: ${new Date(rsvp.date).toLocaleString()}\n\n`;
+
+                totalAttendees += parseInt(rsvp.attendees);
+            });
+
+            rsvpText += `===== TOTAL ATTENDEES: ${totalAttendees} =====`;
+
+            // Display RSVPs in an alert
+            alert(rsvpText);
+        });
+
+        // Function to save RSVPs
+        function saveRSVP(name, email, attendees, message) {
+            const rsvp = {
+                name: name,
+                email: email,
+                attendees: attendees,
+                message: message,
+                date: new Date().toISOString()
+            };
+
+            // Get existing RSVPs
+            let rsvps = getAllRSVPs();
+
+            // Add new RSVP
+            rsvps.push(rsvp);
+
+            // Save to localStorage
+            localStorage.setItem('racePartyRSVPs', JSON.stringify(rsvps));
+        }
+
+        // Function to get all RSVPs
+        function getAllRSVPs() {
+            const rsvpsJSON = localStorage.getItem('racePartyRSVPs');
+            return rsvpsJSON ? JSON.parse(rsvpsJSON) : [];
+        }
+
+        // Function to update RSVP counter
+        function updateRSVPCounter() {
+            const rsvps = getAllRSVPs();
+            const totalAttendees = rsvps.reduce((total, rsvp) => total + parseInt(rsvp.attendees), 0);
+            document.getElementById('rsvp-counter').textContent = totalAttendees;
+        }
+
+        // Function to load settings
+        function loadSettings() {
+            const settingsJSON = localStorage.getItem('racePartySettings');
+            if (!settingsJSON) return;
+
+            const settings = JSON.parse(settingsJSON);
+
+            // Update admin form fields
+            document.getElementById('birthday-child').value = settings.childName;
+            document.getElementById('birthday-age').value = settings.childAge;
+            document.getElementById('party-date').value = settings.partyDate ? new Date(settings.partyDate).toISOString().slice(0, 16) : '';
+            document.getElementById('party-end-time').value = settings.partyEndTime;
+            document.getElementById('party-location').value = settings.venueLocation;
+            document.getElementById('party-address').value = settings.venueAddress;
+            document.getElementById('maps-api-key').value = settings.mapsApiKey || '';
+            document.getElementById('maps-coordinates').value = settings.mapsCoordinates || '';
+            document.getElementById('rsvp-date').value = settings.rsvpDate ? new Date(settings.rsvpDate).toISOString().slice(0, 10) : '';
+            document.getElementById('gcash-number').value = settings.gcashNumber;
+            document.getElementById('gcash-name').value = settings.gcashName;
+            document.getElementById('contact-phone').value = settings.contactPhone;
+            document.getElementById('contact-email').value = settings.contactEmail;
+
+            // Update display elements
+            updatePartyDisplayElements();
+
+            // If maps API key and coordinates are provided, load the map
+            if (settings.mapsApiKey && settings.mapsCoordinates) {
+                loadMap(settings.mapsApiKey, settings.mapsCoordinates);
+            }
+        }
+
+        // Function to update party display elements
+        function updatePartyDisplayElements() {
+            const settingsJSON = localStorage.getItem('racePartySettings');
+            if (!settingsJSON) return;
+
+            const settings = JSON.parse(settingsJSON);
+
+            // Update all display elements
+            document.getElementById('birthday-child-display').textContent = `${settings.childName}'s ${settings.childAge}th Birthday`;
+            document.getElementById('birthday-name-short').textContent = settings.childName;
+            document.getElementById('party-date-display').textContent = settings.formattedPartyDate;
+            document.getElementById('party-time-display').textContent = settings.formattedPartyTime;
+            document.getElementById('party-location-display').textContent = `${settings.venueLocation}, ${settings.venueAddress}`;
+            document.getElementById('rsvp-date-display').textContent = settings.formattedRSVPDate;
+            document.getElementById('gcash-number-display').textContent = settings.gcashNumber;
+            document.getElementById('gcash-name-display').textContent = settings.gcashName;
+            document.getElementById('contact-phone-display').textContent = settings.contactPhone;
+            document.getElementById('contact-email-display').textContent = settings.contactEmail;
+
+            // Update countdown if party date is provided
+            if (settings.partyDate) {
+                updateCountdown(new Date(settings.partyDate));
+            }
+        }
+
+        // Function to update countdown
+        function updateCountdown(partyDate) {
+            // Only set up countdown if we have a valid date
+            if (!partyDate || isNaN(partyDate.getTime())) {
+                return;
+            }
+
+            // Update countdown every second
+            const countdownInterval = setInterval(function () {
+                const now = new Date().getTime();
+                const distance = partyDate.getTime() - now;
+
+                // If the party date has passed, stop countdown
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('days').textContent = '0';
+                    document.getElementById('hours').textContent = '0';
+                    document.getElementById('minutes').textContent = '0';
+                    document.getElementById('seconds').textContent = '0';
+                    return;
+                }
+
+                // Calculate days, hours, minutes, seconds
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Update countdown display
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours;
+                document.getElementById('minutes').textContent = minutes;
+                document.getElementById('seconds').textContent = seconds;
+            }, 1000);
+        }
+
+        // Function to load Google Maps
+        function loadMap(apiKey, coordinates) {
+            // Check if we have coordinates
+            if (!coordinates || !coordinates.includes(',')) {
+                return;
+            }
+
+            const [lat, lng] = coordinates.split(',').map(coord => parseFloat(coord.trim()));
+
+            // Create maps script tag
+            const mapScript = document.createElement('script');
+            mapScript.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+            mapScript.async = true;
+            mapScript.defer = true;
+
+            // Create global initMap function
+            window.initMap = function () {
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: lat, lng: lng },
+                    zoom: 15
+                });
+
+                // Add marker
+                new google.maps.Marker({
+                    position: { lat: lat, lng: lng },
+                    map: map,
+                    animation: google.maps.Animation.DROP
+                });
+            };
+
+            // Add script to page
+            document.head.appendChild(mapScript);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Hide admin settings toggle by default
+            document.getElementById('settings-toggle').style.display = 'none';
+
+            // Check if admin password is set
+            const adminPassword = localStorage.getItem('racePartyAdminPassword');
+
+            // Check if this is a first-time visitor
+            const isFirstVisitor = !localStorage.getItem('racePartyVisited');
+
+            // If this is first visit and no password is set, show admin setup
+            if (isFirstVisitor && !adminPassword) {
+                document.getElementById('settings-toggle').style.display = 'flex';
+                document.getElementById('settings-panel').classList.add('active');
+                document.getElementById('admin-password').focus();
+                alert('Welcome! This appears to be the first time setting up this party. Please set an admin password to protect your settings.');
+                localStorage.setItem('racePartyVisited', 'true');
+            }
+
+            // Load settings if available
+            const savedSettings = localStorage.getItem('racePartySettings');
+            if (savedSettings) {
+                loadSettings();
+                updateRSVPCounter();
+                document.getElementById('no-settings-message').style.display = 'none';
+            } else {
+                document.getElementById('no-settings-message').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>
